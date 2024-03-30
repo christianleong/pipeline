@@ -2,7 +2,8 @@ require('dotenv').config()
 
 const express = require('express')
 const app = express()
-const port = 8080
+const port = process.env.PORT || 3000;
+const session = require("express-session");
 
 // requiring routers
 const homeRouter = require('./routes/home_router')
@@ -16,6 +17,14 @@ app.use(express.static('client'))
 
 // ejs
 app.set('view engine', 'ejs')
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "mistyrose",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 // routers
 app.use(homeRouter)
